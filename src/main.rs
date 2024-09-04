@@ -1,48 +1,39 @@
 use std::fs;
+use std::path::Path;
+use std::io::Write;
 
-#[derive(Debug, Clone, Copy)]
-struct Point {
-    x: f32,
-    y: f32,
-}
-
-impl Point {
-    fn distance(&self, other: Point) -> f32 {
-        let dx = self.x - other.x;
-        let dy = self.y - other.y;
-        (dx * dx + dy * dy).sqrt()
-    }
-}
+pub mod closest_point_pair;
 
 fn main() -> std::io::Result<()> {
-    let file_path = "./src/ClosestPointPair/tests/0.txt";
-    
-    let points = parse_input(file_path);
-    
-    let answer = closest_point_pair_brute_force(&points);
-    
-    println!("{:.32}", answer);
-    
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/2.txt"));
+    println!("{}", closest_point_pair::brute_force("./tests/closest-point-pair/mod-old-data/2.txt"));
+
     Ok(())
 }
 
-fn closest_point_pair_brute_force(points: &Vec<Point>) -> f32 {
-    let minimum = points[0].distance(points[1]);
-    
-    return minimum;
-}
+fn mod_old_data() -> std::io::Result<()> {
+    for i in 0..11 {
+        let input_path = format!("./tests/closest-point-pair/old-data/{}.txt", i);
+        let output_path = format!("./tests/closest-point-pair/mod-old-data/{}.txt", i);
+        let file_contents = fs::read_to_string(&input_path)?;
+        let contents_vec: Vec<&str> = file_contents.split(", ").collect();
+        let mut mod_content = String::new();
+        for j in 0..((contents_vec.len() / 7) + 1) {
+            let start = j * 7;
+            let end = (j + 1) * 7;
+            let chunk: Vec<&str> = contents_vec[start..std::cmp::min(end, contents_vec.len())].to_vec();
+            mod_content.push_str(&chunk.join(", "));
+            mod_content.push_str(", \n");
+        }
+        mod_content = mod_content.trim_end_matches(", \n").to_string();
+        if let Some(parent) = Path::new(&output_path).parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let mut mod_file = fs::File::create(&output_path)?;
+        mod_file.write_all(mod_content.as_bytes())?;
 
-fn parse_input(file_path: &str) -> Vec<Point> {
-    let input = fs::read_to_string(file_path).expect("Failed to open {file_path}");
-    
-    input.trim_matches(|c| c == '{' || c == '}' || c == ' ')
-        .split("},{")
-        .map(|pair| {
-            let mut coords = pair.split(",");
-            Point {
-                x: coords.next().unwrap().trim().parse().unwrap(),
-                y: coords.next().unwrap().trim().parse().unwrap(),
-            }
-        })
-        .collect()
+        println!("Wrote modified content to {}", output_path);
+    }
+
+    Ok(())
 }
