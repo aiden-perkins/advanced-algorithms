@@ -5,8 +5,28 @@ use std::io::Write;
 pub mod closest_point_pair;
 
 fn main() -> std::io::Result<()> {
-    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/2.txt"));
-    println!("{}", closest_point_pair::brute_force("./tests/closest-point-pair/mod-old-data/2.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/0.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/1.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/2.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/3.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/4.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/5.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/6.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/7.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/8.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/9.txt"));
+    // println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/mod-old-data/10.txt"));
+
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/1.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/2.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/3.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/4.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/5.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/6.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/7.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/8.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/9.txt"));
+    println!("{}", closest_point_pair::divide_and_conquer("./tests/closest-point-pair/data/10.txt"));
 
     Ok(())
 }

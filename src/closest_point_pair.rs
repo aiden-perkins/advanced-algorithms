@@ -4,12 +4,12 @@ use std::cmp::Ordering;
 
 #[derive(Debug, Clone, Copy)]
 struct Point {
-    x: f32,
-    y: f32,
+    x: f64,
+    y: f64,
 }
 
 impl Point {
-    fn distance(&self, other: Point) -> f32 {
+    fn distance(&self, other: Point) -> f64 {
         let dx = self.x - other.x;
         let dy = self.y - other.y;
         (dx * dx + dy * dy).sqrt()
@@ -74,10 +74,10 @@ fn parse_input(file_path: &str) -> Vec<Point> {
     points
 }
 
-pub fn brute_force(file_path: &str) -> f32 {
+pub fn brute_force(file_path: &str) -> f64 {
     let points = parse_input(file_path);
     
-    let mut distance_min = f32::INFINITY;
+    let mut distance_min = f64::INFINITY;
     for i in 0..points.len() {
         for j in i+1..points.len() {
             let dist = points[i].distance(points[j]);
@@ -90,19 +90,16 @@ pub fn brute_force(file_path: &str) -> f32 {
     distance_min
 }
 
-pub fn divide_and_conquer(file_path: &str) -> f32 {
+pub fn divide_and_conquer(file_path: &str) -> f64 {
     let mut points = parse_input(file_path);
     points.sort_unstable_by(|a, b| a.x.partial_cmp(&b.x).unwrap());
     split_and_solve(&mut *points)
 }
 
-fn split_and_solve(points: &mut [Point]) -> f32 {
+fn split_and_solve(points: &mut [Point]) -> f64 {
     let n = points.len();
-    if n > 1000000 {
-        println!("{}", n);
-    }
-    if n < 4 {
-        let mut distance_min = f32::INFINITY;
+    if n < 100 {
+        let mut distance_min = f64::INFINITY;
         for i in 0..n {
             for j in i+1..n {
                 let distance = points[i].distance(points[j]);
@@ -119,7 +116,7 @@ fn split_and_solve(points: &mut [Point]) -> f32 {
 
     let (left_points, right_points) = points.split_at_mut(middle_index);
 
-    let new_min = f32::min(
+    let new_min = f64::min(
         split_and_solve(left_points),
         split_and_solve(right_points)
     );
@@ -130,7 +127,7 @@ fn split_and_solve(points: &mut [Point]) -> f32 {
     let left_index = points[..middle_index].partition_point(|p| p.x < left_min);
     let right_index = middle_index + points[middle_index..].partition_point(|p| p.x <= right_max);
 
-    let middle_points = &mut points[left_index..right_index];
+    let mut middle_points = points[left_index..right_index].to_vec();
     middle_points.sort_unstable_by(|a, b| a.y.partial_cmp(&b.y).unwrap());
 
     let mut min_distance = new_min;
