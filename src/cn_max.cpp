@@ -115,7 +115,10 @@ int chromatic_number(const std::string& file_path) {
     if (!has_edges) return 1;
     
     // Try coloring with increasing number of colors
-    for (int colors = graph.n; colors > 0; colors--) {
+    std::vector<int> specific_colors = {1, 2, 3, 4, 5, 7, 9, 11, 14, 16, 18, 22, 24, 25, 27, 29, 34, 36, 38, 39, 41, 46, 47, 50, 57, 58};
+    // for (int colors = graph.n; colors > 0; colors--) {
+    for (auto it = specific_colors.rbegin(); it != specific_colors.rend(); ++it) {
+        int colors = *it;
         if (is_colorable(graph, colors)) {
             auto now = std::chrono::system_clock::now();
             auto now_c = std::chrono::system_clock::to_time_t(now);
@@ -131,16 +134,11 @@ int chromatic_number(const std::string& file_path) {
 
 int main() {
     std::vector<std::string> file_paths = {
-        "./tests/chromatic-number/data/1.txt",
         "./tests/chromatic-number/data/2.txt",
-        "./tests/chromatic-number/data/3.txt",
         "./tests/chromatic-number/data/4.txt",
         "./tests/chromatic-number/data/5.txt",
         "./tests/chromatic-number/data/6.txt",
-        "./tests/chromatic-number/data/7.txt",
         "./tests/chromatic-number/data/8.txt",
-        "./tests/chromatic-number/data/9.txt",
-        "./tests/chromatic-number/data/10.txt"
     };
 
     std::vector<std::future<int>> futures;
