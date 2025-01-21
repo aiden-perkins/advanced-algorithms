@@ -65,7 +65,6 @@ impl Graph {
 
         while !self.color_graph(0, num_colors, &mut color_map) {
             num_colors += 1;
-            println!("{}", num_colors);
             color_map.clear();
         }
 

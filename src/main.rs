@@ -1,25 +1,51 @@
-use std::fs;
+use std::{fs, thread};
 use std::path::Path;
 use std::io::Write;
+use std::sync::Arc;
 
 pub mod closest_point_pair;
 pub mod matching;
 pub mod chromatic_number;
+pub mod vertex_cover;
+pub mod independent_set;
 
 fn main() -> std::io::Result<()> {
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/10.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/1.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/2.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/3.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/4.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/5.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/6.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/7.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/8.txt"));
-    println!("{}", chromatic_number::chromatic_number("./tests/chromatic-number/data/9.txt"));
-    
+    let file_paths = vec![
+        "./tests/independent-set/data/1.txt",
+        "./tests/independent-set/data/2.txt",
+        "./tests/independent-set/data/3.txt",
+        "./tests/independent-set/data/4.txt",
+        "./tests/independent-set/data/5.txt",
+        "./tests/independent-set/data/6.txt",
+        "./tests/independent-set/data/7.txt",
+        "./tests/independent-set/data/8.txt",
+        "./tests/independent-set/data/9.txt",
+        "./tests/independent-set/data/10.txt",
+    ];
+
+    let file_paths = Arc::new(file_paths);
+    let mut handles = vec![];
+
+    for (i, _) in file_paths.iter().enumerate() {
+        let file_paths = Arc::clone(&file_paths);
+        let handle = thread::spawn(move || {
+            let result = independent_set::independent_set(&file_paths[i]);
+            println!("File {}: {}", i + 1, result);
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
     Ok(())
 }
+    // , UndirectedEdge[15850, 0]
+    // this goes at the end of 2.txt in vertex-cover data
+    
+    // , UndirectedEdge[5, 0]
+    // this goes at the end of line 7 of 2.txt in independent-set data
 
 fn mod_old_data() -> std::io::Result<()> {
     for i in 0..11 {
